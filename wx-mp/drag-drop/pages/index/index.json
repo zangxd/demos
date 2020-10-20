@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "drag-image": "../../components/drag-image/index"
+  }
+}
