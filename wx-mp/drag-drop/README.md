@@ -25,10 +25,7 @@
 </movable-area>
 ```
 
-在组件实例初始化后，计算一张图片的宽度，用于增加图片宽高和`moveable-area` 的高度。
-
-
-1. 在图片上传后需要更新`moveable-area`的高度（即图片列表的高度）
+1. 在组件实例初始化后，计算一张图片的宽度，用于增加图片宽高和`moveable-area` 的高度。
 
 ```
  computedImageWidth: function () {
@@ -40,9 +37,27 @@
   },
 ```
 
+
+2. 在图片上传后需要更新`moveable-area`的高度（即图片列表的高度）
+
+```
+computedAreaHeight: function () {
+  wx.createSelectorQuery()
+    .in(this)
+    .select(".image-list")
+    .boundingClientRect(
+      (rect: WechatMiniprogram.BoundingClientRectResult) =>
+        this.setData({
+          areaHeight: rect.height,
+        })
+    )
+    .exec();
+},
+```
+
 如果组件中有涉及到图片删除的操作，需要在删除的时候也要更新下`moveable-area`的高度。
 
-2. 图片拖拽的触发是通过 `longpress` 触发的，触发后需要计算下每张图片的坐标（便于后期替换图片的范围判断）、记录当前选中的图片在的下标、url，并显示 `moveable-view`，并设置其 x、y 值，将 url 赋值给其下的子元素。
+3. 图片拖拽的触发是通过 `longpress` 触发的，触发后需要计算下每张图片的坐标（便于后期替换图片的范围判断）、记录当前选中的图片在的下标、url，并显示 `moveable-view`，并设置其 x、y 值，将 url 赋值给其下的子元素。
 
 ```
 handleLongPress: function (e) {
@@ -53,7 +68,7 @@ handleLongPress: function (e) {
     currentImg: e.currentTarget.dataset.url,
     currentIndex: e.currentTarget.dataset.index,
     hidden: false,
-    flag: true,
+    isLongPress: true,
   });
 },
 
@@ -101,6 +116,9 @@ handleTouchMove: function (e) {
 
 ```
 handleTouchEnd: function (e) {
+  if (!this.data.isLongPress) {
+    return;
+  }
   let { pageX: x, pageY: y } = e.changedTouches[0];
   let { images, coordinates } = this.data;
   for (let i = 0; i < coordinates.length; i++) {
@@ -123,6 +141,7 @@ handleTouchEnd: function (e) {
     images,
     hidden: true,
     currentImg: "",
+    isLongPress: false,
   });
 },
 ```
