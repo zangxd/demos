@@ -12,6 +12,7 @@ Component({
     hidden: true,
     currentImg: "",
     currentIndex: 0,
+    isLongPress: false,
   },
   methods: {
     computedImageWidth: function () {
@@ -102,7 +103,7 @@ Component({
         currentImg: e.currentTarget.dataset.url,
         currentIndex: e.currentTarget.dataset.index,
         hidden: false,
-        flag: true,
+        isLongPress: true,
       });
     },
 
@@ -124,6 +125,9 @@ Component({
     },
 
     handleTouchEnd: function (e) {
+      if (!this.data.isLongPress) {
+        return;
+      }
       let { pageX: x, pageY: y } = e.changedTouches[0];
       let { images, coordinates } = this.data;
       for (let i = 0; i < coordinates.length; i++) {
@@ -146,6 +150,7 @@ Component({
         images,
         hidden: true,
         currentImg: "",
+        isLongPress: false,
       });
     },
   },
