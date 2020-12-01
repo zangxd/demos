@@ -1,7 +1,3 @@
 /**index.wxss**/
 .container {
-  height: 100vh;
-  padding: 16rpx;
-  box-sizing: border-box;
-  background-color: #263344;
 }
