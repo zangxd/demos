@@ -1,4 +1,5 @@
 {
   "usingComponents": {
+    "infinite-scroll-list": "../../components/infinite-scroll-list/index"
   }
 }
