@@ -1,4 +1,3 @@
-<!-- pages/doubleVideos/doubleVideos.wxml -->
 <view class="page">
     <view wx:for="{{ list }}" id="wrp_{{pageIndex}}" wx:for-index="pageIndex" wx:for-item="listSingleItem" wx:key="index">
         <view wx:if="{{ listSingleItem.length > 0 }}">
