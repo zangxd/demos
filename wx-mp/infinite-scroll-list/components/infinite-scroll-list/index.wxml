@@ -1,5 +1,5 @@
 <view class="page">
-    <scroll-view>
+    <scroll-view bindscrolltolower="onReachBottom">
         <view wx:for="{{ list }}" id="wrp_{{pageIndex}}" wx:for-index="pageIndex" wx:for-item="listSingleItem" wx:key="index">
             <view wx:if="{{ listSingleItem.length > 0 }}">
                 <view class="wrp" wx:for="{{ listSingleItem }}" wx:for-index="index" wx:for-item="listItem" wx:key="index">

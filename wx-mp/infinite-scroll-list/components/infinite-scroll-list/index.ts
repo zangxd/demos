@@ -13,7 +13,8 @@ Component({
     setHeight: function () {},
     observePage: function () {},
     getVideoInfoData: function () {},
-    onScroll: function() {}
+    onScroll: function() {},
+    onReachBottom: function() {}
   },
   lifetimes: {
     attached: function () {
