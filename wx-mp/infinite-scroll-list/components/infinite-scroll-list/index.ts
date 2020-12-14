@@ -1,44 +1,43 @@
 const app = getApp<IAppOption>();
 
-let index = 0;
-let wholePageIndex = 0; // 第几屏
-let wholeVideoList: any = []; // 所有屏的数据
-let currentRenderIndex = 0; // 当前渲染的是哪一屏
-let pageHeightArr: any = [];
-let windowHeight: number; //当前屏幕的高度;
+let index = 0; // data index
+let screenIndex = 0; // screen index
+let allData: any[] = []; // all data
+let currentScreenIndex = 0; // current render screen index
+let screenHeights: number[] = []; // screen height list
+let windowHeight: number; // current screen height
 
 Component({
   properties: {},
-  data: {},
+  data: {
+    listData: [],
+  },
   methods: {
     setHeight: function () {
       const query = wx.createSelectorQuery().in(this);
       query
-        .select(`#wrp_${wholePageIndex}`)
+        .select(`#screen_${screenIndex}`)
         .boundingClientRect((res) => {
-          pageHeightArr[wholePageIndex] = res.height;
+          screenHeights[screenIndex] = res.height;
         })
         .exec();
-      this.observePage(wholePageIndex);
+      this.observePage(screenIndex);
     },
-    observePage: function (pageIndex) {
-      const that = this;
-      const observerObj = wx
-        .createIntersectionObserver(this)
-        .relativeToViewport({
-          top: 2 * windowHeight,
-          bottom: 2 * windowHeight,
-        });
-      observerObj.observe(`#wrp_${pageIndex}`, (res) => {
+    observePage: function (sIndex: number) {
+      const ob = wx.createIntersectionObserver(this).relativeToViewport({
+        top: 2 * windowHeight,
+        bottom: 2 * windowHeight,
+      });
+      ob.observe(`#screen_${sIndex}`, (res) => {
         if (res.intersectionRatio <= 0) {
-          that.setData({
-            ["list[" + pageIndex + "]"]: {
-              height: pageHeightArr[pageIndex],
+          this.setData({
+            ["listData[" + sIndex + "]"]: {
+              height: screenHeights[sIndex],
             },
           });
         } else {
-          that.setData({
-            ["list[" + pageIndex + "]"]: wholeVideoList[pageIndex],
+          this.setData({
+            ["listData[" + sIndex + "]"]: allData[sIndex],
           });
         }
       });
@@ -46,29 +45,26 @@ Component({
     onReachBottom: function () {
       this.getData();
     },
-    onScroll: function () {
-      console.log("onScroll");
-    },
     getData: function () {
-      const data = mockData();
-      wholePageIndex += 1;
-      currentRenderIndex = wholePageIndex;
-      wholeVideoList[wholePageIndex] = data;
-      let datas: any = {};
-      let tempList = new Array(wholePageIndex + 1).fill(0);
-      if (wholePageIndex > 2) {
+      const ary = mockData();
+      screenIndex += 1;
+      currentScreenIndex = screenIndex;
+      allData[screenIndex] = ary;
+      let data: Record<string, any> = {};
+      let tempList = new Array(screenIndex + 1).fill(0);
+      if (screenIndex > 2) {
         tempList.forEach((item, index) => {
           if (index < tempList.length - 2) {
-            tempList[index] = { height: pageHeightArr[index] };
+            tempList[index] = { height: screenHeights[index] };
           } else {
-            tempList[index] = wholeVideoList[index];
+            tempList[index] = allData[index];
           }
         });
-        datas.list = tempList;
+        data.listData = tempList;
       } else {
-        datas[`list[${wholePageIndex}]`] = data;
+        data[`listData[${screenIndex}]`] = ary;
       }
-      this.setData(datas, () => {
+      this.setData(data, () => {
         this.setHeight();
       });
     },
@@ -80,13 +76,14 @@ Component({
           windowHeight = res.windowHeight;
         },
       });
-      this.setData({ ["list[" + wholePageIndex + "]"]: mockData() }, () => {
+      const arr = mockData();
+      allData[screenIndex] = arr;
+      this.setData({ ["listData[" + screenIndex + "]"]: arr }, () => {
         this.setHeight();
       });
     },
   },
 });
-
 
 const mockData = () => {
   return [
