@@ -1,12 +1,12 @@
 <view class="page">
     <scroll-view scroll-y="true" style="height:100vh" bindscrolltolower="onReachBottom">
-        <view wx:for="{{ list }}" id="wrp_{{pageIndex}}" wx:for-index="pageIndex" wx:for-item="listSingleItem" wx:key="index">
-            <view wx:if="{{ listSingleItem.length > 0 }}">
-                <view class="wrp" wx:for="{{ listSingleItem }}" wx:for-index="index" wx:for-item="listItem" wx:key="index">
-                    当前是第{{ listItem.idx }}个元素，为第 {{ pageIndex }} 屏数据
+        <view wx:for="{{ listData }}" id="screen_{{screenIndex}}" wx:for-index="screenIndex" wx:for-item="screenData" wx:key="index">
+            <view wx:if="{{  screenData.length > 0 }}">
+                <view class="wrp" wx:for="{{ screenData }}" wx:for-index="index" wx:for-item="listItem" wx:key="index">
+                    当前是第{{ listItem.idx }}个元素，为第 {{ screenIndex }} 屏数据
                 </view>
             </view>
-            <view wx:else style="height: {{ listSingleItem.height}}px"></view>
+            <view wx:else style="height: {{ screenData.height }}px"></view>
         </view>
     </scroll-view>
 </view>
