@@ -1,0 +1,14 @@
+<view class="container">
+    <view class="tips">
+        {{appear ? "小球出现" : "小球消失"}}
+    </view>
+    <view class="section">
+        <scroll-view class="scroll-view" scroll-y>
+            <view class="scroll-area" style="{{appear ? 'background: #ccc' : ''}}">
+                <text class="notice">向下滚动让小球出现</text>
+                <view class="filling"></view>
+                <view class="ball"></view>
+            </view>
+        </scroll-view>
+    </view>
+</view>

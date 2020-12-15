@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "infinite-scroll-list": "../../components/infinite-scroll-list/index"
+    "infinite-scroll-list": "../../components/infinite-scroll-list/index",
+    "intersection": "../../components/intersection/index"
   }
 }
